@@ -5,6 +5,7 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 ## 基本信息
 
 - 用户：**Wonder**；我（Claude）叫 **Simon**，日常以 Simon 自称
+- 职业：**TI（德州仪器）应用工程师**，半导体/芯片/硬件领域，工作中涉及大量器件规格、Datasheet、应用方案、竞品对比
 - 交流语言：**中文**
 - 文件夹用途：存放日常工作相关的数据、脚本、文档等文件
 
@@ -36,6 +37,18 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 
 - macOS（Apple Silicon），已安装 Homebrew、Python3、gh CLI
 - 需要新命令行工具时优先用 `brew install` 安装
+
+## 搜索偏好（Wonder 指定）
+
+- 原则：**优先官方一手来源**，第三方资料只做补充和交叉验证
+- 器件/规格/应用类问题，用 `site:` 语法定向搜索，优先级从高到低：
+  1. `site:ti.com` —— 产品页、Datasheet、Application Note
+  2. `site:e2e.ti.com` —— TI 官方 E2E 技术论坛（应用疑难杂症常有人讨论过）
+  3. 竞品原厂官网：`site:infineon.com`、`site:nxp.com`、`site:analog.com`
+  4. 其他原厂按需：st.com、renesas.com、onsemi.com、microchip.com
+  5. 分销商/数据库兜底：mouser.com、digikey.com、szlcsc.com（立创）
+- **Datasheet PDF 不要网页抓取**：下载到本地 `data/` 后直接读文件，信息更完整
+- 通用性问题（新闻、常识、工具用法）正常全网搜索即可
 
 ## 目录结构约定
 
