@@ -4,3 +4,6 @@ data/datasheets/
 # 临时文件
 *.tmp
 .DS_Store
+
+# 自检状态文件
+data/.last_audit
