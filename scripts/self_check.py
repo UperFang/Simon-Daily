@@ -22,7 +22,8 @@ import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-REQUIRED_SCRIPTS = ["read_mail.py", "send_mail.py", "zotero_lib.py", "zotero_add.py", "self_check.py"]
+REQUIRED_SCRIPTS = ["read_mail.py", "send_mail.py", "zotero_lib.py", "zotero_add.py",
+                    "self_check.py", "cleanup_cache.py"]
 KEYCHAIN = [("qq-mail", "QQ 邮箱授权码"), ("zotero-api-key", "Zotero API key")]
 REQUIRED_PATHS = ["docs/knowledge", "data/datasheets", "CLAUDE.md", ".gitignore"]
 KNOWLEDGE_DIR = os.path.join(ROOT, "docs", "knowledge")
