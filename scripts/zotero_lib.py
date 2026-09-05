@@ -14,6 +14,7 @@
     python3 scripts/zotero_lib.py -s 关键词       # 按标题/作者搜索（附原文路径）
     python3 scripts/zotero_lib.py --collections  # 列出所有分类及条目数
     python3 scripts/zotero_lib.py -c "分类名"     # 浏览某个分类下的条目（附原文路径）
+    python3 scripts/zotero_lib.py --updates      # 报告上次检查以来的新增条目（会刷新时间戳）
 
 输出说明：
     条目格式为 [序号] 标题 —— 作者 (年份)，搜索/分类模式下还会给出 📄 原文绝对路径，
@@ -26,10 +27,12 @@ import sqlite3
 import subprocess
 import sys
 import tempfile
+from datetime import datetime, timedelta, timezone
 
 ZOTERO_DIR = os.path.expanduser("~/Zotero")
 DB_PATH = os.path.join(ZOTERO_DIR, "zotero.sqlite")
 STORAGE_DIR = os.path.join(ZOTERO_DIR, "storage")
+STATE_FILE = os.path.join(ZOTERO_DIR, ".simon_last_check")  # 记录上次检查时间（UTC）
 
 
 def snapshot_db():
@@ -105,7 +108,7 @@ def attachment_paths(db, item_id):
     return [p for p in paths if os.path.exists(p)]
 
 
-def base_query(where="", tail="", args=()):
+def base_query(where="", args=(), tail=""):
     return (
         "SELECT i.itemID, it.typeName, "
         "COALESCE(idv.value, '') AS title, i.dateAdded "
@@ -137,6 +140,33 @@ def print_items(db, rows, with_paths=False):
                 print(f"     📄 {p}")
 
 
+def check_updates(db):
+    """报告自上次检查以来新增的条目，然后刷新检查时间戳（存 ~/Zotero/.simon_last_check）"""
+    last = None
+    if os.path.exists(STATE_FILE):
+        with open(STATE_FILE) as f:
+            last = f.read().strip()
+
+    if last:
+        sql, a = base_query("AND i.dateAdded > ?", (last,))
+        rows = q(db, sql, a)
+        print(f"📚 知识库更新报告：自上次检查（{last} UTC）以来新增 {len(rows)} 个条目\n")
+    else:
+        since = (datetime.now(timezone.utc) - timedelta(days=7)).strftime("%Y-%m-%d %H:%M:%S")
+        sql, a = base_query("AND i.dateAdded > ?", (since,))
+        rows = q(db, sql, a)
+        print(f"📚 知识库更新报告：首次检查，显示最近 7 天新增（{len(rows)} 个条目）\n")
+
+    if rows:
+        print_items(db, rows, with_paths=True)
+    else:
+        print("（没有新增）")
+
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S")
+    with open(STATE_FILE, "w") as f:
+        f.write(now)
+
+
 def main():
     args = sys.argv[1:]
     db = None
@@ -144,6 +174,10 @@ def main():
     try:
         snap = snapshot_db()
         db = sqlite3.connect(snap)
+
+        if "--updates" in args:
+            check_updates(db)
+            return
 
         if "--collections" in args:
             rows = q(
