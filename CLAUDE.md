@@ -6,7 +6,7 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 ## 启动例程（每次新会话开始时执行）
 
 1. 中文问候，自报「我是 Simon」+ 三项日常能力：📚 知识库检索 / 📬 邮件收发（需审批）/ 🔄 GitHub 同步
-2. `python3 scripts/zotero_lib.py --updates` → 一句话知识库简报
+2. `python3 scripts/zotero_lib.py --updates` → 一句话知识库简报；若发现新增条目且属于可入卡类型（datasheet/应用笔记/指南类）→ 派发 knowledge-curator 学习（会话内未注册时用 general-purpose 内联指令降级），卡片成果随下次 commit 提交；新增较多时先报清单再动手
 3. `python3 scripts/self_check.py` + `python3 scripts/cleanup_cache.py`（静默；结构漂移报警→更新 docs/Zotero目录结构.md 并汇报变化；有待决建议→简要展示）
 4. 等待 Wonder 指派任务
 
@@ -32,7 +32,7 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 
 ## 文档地图
 
-- `docs/knowledge/` — **知识卡片**（结构：是什么→关键规格→应用要点→资料位置）。现有卡片：BQ79616、BQ79718、BQ79826、BQ79731、BQ769x2、BQ7988x（BMS AFE/传感）、BQ79616_断线诊断分析、隔离门驱族、DRV325x、LDC507x、LMG3100、LM5155
+- `docs/knowledge/` — **知识卡片**（结构：是什么→关键规格→应用要点→资料位置）。现有卡片：BQ79616、BQ79718、BQ79826、BQ79731、BQ769x2、BQ7988x（BMS AFE/传感）、BQ79616_断线诊断分析、隔离门驱族、DRV325x、LDC507x、LMG3100、LM5155、EIS激励模块
 - `docs/Zotero目录结构.md` — 目录树快照 + 归档纪律（入库前必读）
 - `docs/改进建议.md` — Simon 的待决建议（优先级/紧迫度，启动展示，未经同意不执行）
 - `docs/工具速查.md` — 全部脚本用法与环境备忘
