@@ -10,3 +10,6 @@ data/.last_audit
 
 # Zotero 结构快照
 data/.zotero_tree
+
+# 知识库学习进度（含客户数据，不公开）
+docs/knowledge/_学习进度与文件清单.md

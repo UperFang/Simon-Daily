@@ -13,6 +13,7 @@
     python3 scripts/zotero_lib.py 50             # 列出最近 50 个条目
     python3 scripts/zotero_lib.py -s 关键词       # 按标题/作者搜索（附原文路径）
     python3 scripts/zotero_lib.py --collections  # 列出所有分类及条目数
+    python3 scripts/zotero_lib.py --tree         # 分类树（含子分类，目录结构以此为准）
     python3 scripts/zotero_lib.py -c "分类名"     # 浏览某个分类下的条目（附原文路径）
     python3 scripts/zotero_lib.py --updates      # 报告上次检查以来的新增条目（会刷新时间戳）
 
@@ -167,6 +168,25 @@ def check_updates(db):
         f.write(now)
 
 
+def print_tree(db):
+    """渲染分类树（含各分类条目数），目录结构以此为准"""
+    rows = q(db, "SELECT collectionID, collectionName, parentCollectionID FROM collections")
+    names = {}
+    children = {}
+    for cid, name, parent in rows:
+        names[cid] = name
+        children.setdefault(parent, []).append(cid)
+
+    counts = dict(q(db, "SELECT collectionID, COUNT(itemID) FROM collectionItems GROUP BY collectionID"))
+
+    def walk(parent, depth=0):
+        for cid in sorted(children.get(parent, []), key=lambda c: names[c].lower()):
+            print("  " * depth + f"├─ {names[cid]}  ({counts.get(cid, 0)} 条)")
+            walk(cid, depth + 1)
+
+    walk(None)
+
+
 def main():
     args = sys.argv[1:]
     db = None
@@ -177,6 +197,10 @@ def main():
 
         if "--updates" in args:
             check_updates(db)
+            return
+
+        if "--tree" in args:
+            print_tree(db)
             return
 
         if "--collections" in args:
