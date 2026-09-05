@@ -1,0 +1,6 @@
+# 本地资料不入公开仓库（版权/NDA 风险）
+data/datasheets/
+
+# 临时文件
+*.tmp
+.DS_Store
