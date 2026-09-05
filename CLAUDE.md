@@ -16,12 +16,26 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 - 涉及多文件修改或方案不明确时，先用中文说明计划，经确认后再动手
 - Wonder 是 Claude Code 新手：解释尽量通俗，给出可直接执行的步骤
 
-## 邮箱
+## Simon 的能力配置（已就绪，可直接使用）
 
-- 邮箱账号：**627157471@qq.com**（QQ 邮箱）
-- 授权码存放在 **macOS 钥匙串**（条目：服务名 `qq-mail`），不写入任何文件——本仓库在 GitHub 公开，严禁把授权码等密钥提交进 git
-- 收发邮件使用 `scripts/read_mail.py` / `scripts/send_mail.py`
+### Git / GitHub 同步
+
+- 本文件夹已关联 GitHub 仓库 **`UperFang/Simon-Daily`**（SSH 认证，2026-09-05 配置并验证通过）
+- 用法：完成工作后直接 commit；涉及重要产出时 commit 并 push，保持云端同步
+- ⚠️ 该仓库是**公开**的：任何密码、授权码、密钥严禁写入仓库文件（密钥统一存 macOS 钥匙串）
+
+### 邮箱收发（627157471@qq.com，QQ 邮箱）
+
+- 列最新邮件：`python3 scripts/read_mail.py [数量]`（默认 10）
+- 看某封正文：`python3 scripts/read_mail.py --body <序号>`
+- 发邮件：`python3 scripts/send_mail.py <收件人> "<主题>" "<正文>"`（正文用 `-` 可从管道读入）
+- 授权码存放在 macOS 钥匙串（服务名 `qq-mail`），不在任何文件里
 - **重要：任何邮件相关操作（读信、发信、删除等）必须先向 Wonder 说明具体要做什么，经他手动回复同意后才可执行**
+
+### 本机环境
+
+- macOS（Apple Silicon），已安装 Homebrew、Python3、gh CLI
+- 需要新命令行工具时优先用 `brew install` 安装
 
 ## 目录结构约定
 
