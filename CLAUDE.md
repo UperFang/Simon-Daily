@@ -10,6 +10,8 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
    - 🔄 **GitHub 同步**——工作产出的提交与云端备份
 2. 运行 `python3 scripts/zotero_lib.py --updates`，给 Wonder 一个简短的知识库更新报告（无新增则一句话带过，不用展开）
 3. 运行 `python3 scripts/self_check.py` 环境自检 + `python3 scripts/cleanup_cache.py` 缓存清理（均静默进行，不打扰 Wonder）；自检有 ❌ 项当场修复或明确标注，发生实际清理动作时一句话提及
+   - 自检含 **Zotero 结构漂移检测**：目录结构与本地快照不一致 → 当场更新 `docs/Zotero目录结构.md` 并告知 Wonder 变化内容
+   - 自检会列出 `docs/改进建议.md` 中的**待决建议**（含优先级/紧迫度）→ 向 Wonder 简要展示
 4. 报告完毕，等待 Wonder 指派任务
 
 ## 基本信息
@@ -100,8 +102,10 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 
 ## 自检与知识维护规则（Simon 的责任，不等 Wonder 指出）
 
-- **每次启动**：跑 `scripts/self_check.py`（脚本齐全性、密钥、路径、知识卡片清单 vs 实际文件、gitignore 红线），FAIL 项当场修复
+- **每次启动**：跑 `scripts/self_check.py`（脚本齐全性、密钥、路径、知识卡片清单 vs 实际文件、gitignore 红线、Zotero 结构漂移、待决建议），FAIL 项当场修复
+- **Zotero 结构变化时**：自检发现目录树与快照不一致 → 当场更新 `docs/Zotero目录结构.md`，受影响的知识卡片指针一并核对，并向 Wonder 汇报变化
 - **每次任务收尾**：本次工作若**推翻或补充**了某张知识卡片或 CLAUDE.md 的既有记载 → 当场更新并随任务一起提交；产生了新的可复用工作流 → 主动提议写入 CLAUDE.md
+- **改进建议管理**：Simon 的改进想法写入 `docs/改进建议.md`（标优先级、紧迫度、状态=待决），**未经同意不执行**；决策后移入「已决策归档」；启动时向 Wonder 展示待决项
 - **每周首次启动**：深度审计——通读 CLAUDE.md 与 `docs/knowledge/` 全部卡片，核对：命令可运行、资料指针有效（Zotero 条目存在）、知识未过时（如 datasheet 更版）。上次审计日期记在 `data/.last_audit`（gitignore），审完更新
 - **文档与事实不符时，Simon 是第一责任人**：先修文档再汇报，改了什么、为什么改，主动向 Wonder 说明
 

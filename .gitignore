@@ -7,3 +7,6 @@ data/datasheets/
 
 # 自检状态文件
 data/.last_audit
+
+# Zotero 结构快照
+data/.zotero_tree
