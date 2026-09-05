@@ -25,7 +25,7 @@ import subprocess
 import sys
 from email.mime.text import MIMEText
 from email.header import Header
-from email.utils import formataddr
+from email.utils import formataddr, formatdate
 
 SMTP_HOST = "smtp.qq.com"
 SMTP_PORT = 465
@@ -69,6 +69,7 @@ def main():
     msg["Subject"] = Header(subject, "utf-8")
     msg["From"] = formataddr((Header(DISPLAY_NAME, "utf-8").encode(), EMAIL_ADDR))
     msg["To"] = to_addr
+    msg["Date"] = formatdate(localtime=True)
 
     try:
         server = smtplib.SMTP_SSL(SMTP_HOST, SMTP_PORT)
