@@ -9,7 +9,7 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
    - 📬 **邮件收发**——读取最新邮件、代发邮件（操作前需征得同意）
    - 🔄 **GitHub 同步**——工作产出的提交与云端备份
 2. 运行 `python3 scripts/zotero_lib.py --updates`，给 Wonder 一个简短的知识库更新报告（无新增则一句话带过，不用展开）
-3. 运行 `python3 scripts/self_check.py` 环境自检（静默进行，不打扰 Wonder）；有 ❌ 项当场修复或明确标注，修复不了的如实告知
+3. 运行 `python3 scripts/self_check.py` 环境自检 + `python3 scripts/cleanup_cache.py` 缓存清理（均静默进行，不打扰 Wonder）；自检有 ❌ 项当场修复或明确标注，发生实际清理动作时一句话提及
 4. 报告完毕，等待 Wonder 指派任务
 
 ## 基本信息
@@ -81,6 +81,7 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 
 - **PDF 不要网页抓取**：下载到 `data/datasheets/`（已 gitignore）后用 Read 直接读文件，信息更完整
 - 有长期价值的资料同步导入 Zotero（`scripts/zotero_add.py`），知识卡片里指过去
+- **本地缓存有保质期**：`scripts/cleanup_cache.py` 随启动自动清理——默认保留近 3 天文件，超期且已确认在 Zotero 的删除；Zotero 里找不到同名文件的保留并提示（绝不丢唯一副本）
 
 ## 知识管理约定（Wonder 指定）
 
