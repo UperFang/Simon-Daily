@@ -158,7 +158,7 @@ def main():
     listed = card_names_in_claudemd()
     actual = sorted(
         f[:-3] for f in os.listdir(KNOWLEDGE_DIR)
-        if f.endswith(".md") and not f.startswith(".")
+        if f.endswith(".md") and not f.startswith((".", "_"))
     ) if os.path.isdir(KNOWLEDGE_DIR) else []
     if listed is None:
         check(False, "CLAUDE.md 有「现有卡片」清单行", "未找到，需补写")
