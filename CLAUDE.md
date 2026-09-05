@@ -59,22 +59,27 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 
 ## 搜索偏好（Wonder 指定）
 
-- 原则：**本地 Zotero 知识库已有的资料优先**，其次官方一手来源，第三方资料只做补充和交叉验证
-
 ### 分级检索 RULE（回答技术问题的固定流程）
 
-1. **先查本地**：Zotero 知识库（`scripts/zotero_lib.py`）+ 本文件夹内的文档资料
+- 原则：**本地 Zotero 知识库已有的资料优先**，其次官方一手来源，第三方资料只做补充和交叉验证
+
+1. **先查本地**：Zotero 知识库（`scripts/zotero_lib.py`）+ `docs/knowledge/` 知识卡片 + 本文件夹内的文档资料
 2. **本地答案不完备 → 先询问**：「本地没找全，要联网搜吗？」——经 Wonder 同意后才联网
 3. **联网仍不完备 → 如实说明缺口**（缺什么、可能的原因），由 Wonder 决定下一步
-- 注意：通用常识、Wonder 明确要求联网的问题可直接联网，无需走询问步骤
-- 器件/规格/应用类问题，用 `site:` 语法定向搜索，优先级从高到低：
-  1. `site:ti.com` —— 产品页、Datasheet、Application Note
-  2. `site:e2e.ti.com` —— TI 官方 E2E 技术论坛（应用疑难杂症常有人讨论过）
-  3. 竞品原厂官网：`site:infineon.com`、`site:nxp.com`、`site:analog.com`
-  4. 其他原厂按需：st.com、renesas.com、onsemi.com、microchip.com
-  5. 分销商/数据库兜底：mouser.com、digikey.com、szlcsc.com（立创）
-- **Datasheet PDF 不要网页抓取**：下载到本地 `data/` 后直接读文件，信息更完整
-- 通用性问题（新闻、常识、工具用法）正常全网搜索即可
+- 豁免：通用常识、Wonder 明确要求联网的问题可直接联网，无需走询问步骤
+
+### 联网时的信源优先级（用 `site:` 语法定向）
+
+1. `site:ti.com` —— 产品页、Datasheet、Application Note
+2. `site:e2e.ti.com` —— TI 官方 E2E 技术论坛（应用疑难杂症常有人讨论过）
+3. 竞品原厂官网：`site:infineon.com`、`site:nxp.com`、`site:analog.com`
+4. 其他原厂按需：st.com、renesas.com、onsemi.com、microchip.com
+5. 分销商/数据库兜底：mouser.com、digikey.com、szlcsc.com（立创）
+
+### Datasheet 下载惯例
+
+- **PDF 不要网页抓取**：下载到 `data/datasheets/`（已 gitignore）后用 Read 直接读文件，信息更完整
+- 有长期价值的资料同步导入 Zotero（`scripts/zotero_add.py`），知识卡片里指过去
 
 ## 知识管理约定（Wonder 指定）
 
@@ -88,13 +93,16 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 
 ```
 Simon-Daily/
-├── data/      # 数据文件（CSV、Excel、JSON 等）
-├── scripts/   # 脚本
-├── docs/      # 文档、笔记
-└── archive/   # 已完成/归档的任务材料
+├── CLAUDE.md           # 本文件（项目约定，随 git 走）
+├── data/
+│   └── datasheets/     # Datasheet 本地缓存（gitignore，原始文件归 Zotero 管）
+├── scripts/            # 自动化脚本（邮件收发、Zotero 读写，用法见「能力配置」）
+├── docs/
+│   └── knowledge/      # 知识卡片（规则见「知识管理约定」）
+└── archive/            # 已完成/归档的任务材料（首次用到时再建）
 ```
 
-（子目录在首次用到时再创建，git 不追踪空目录）
+（git 不追踪空目录；新类型的工作产物按需建子目录）
 
 ## 说明
 
