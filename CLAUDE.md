@@ -33,14 +33,23 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 - 授权码存放在 macOS 钥匙串（服务名 `qq-mail`），不在任何文件里
 - **重要：任何邮件相关操作（读信、发信、删除等）必须先向 Wonder 说明具体要做什么，经他手动回复同意后才可执行**
 
+### 本地知识库（Zotero）
+
+- Wonder 的全部知识文件用 **Zotero** 管理：库在 `~/Zotero`（SQLite 元数据 + `storage/` 原文附件），Zotero 运行中也可安全读取（脚本用文件快照方式，不碰锁）
+- 列出最近条目：`python3 scripts/zotero_lib.py [数量]`
+- 搜索条目（结果附原文绝对路径）：`python3 scripts/zotero_lib.py -s 关键词`
+- 浏览分类：`python3 scripts/zotero_lib.py --collections`；按分类浏览：`-c "分类名"`
+- 找到原文路径后直接用 Read 工具读 PDF（已装 poppler）
+- ⚠️ 库里存在 **TI 保密（NDA）文档**：这类内容只供本地会话分析，严禁写入任何会推送到公开 GitHub 仓库的文件
+
 ### 本机环境
 
-- macOS（Apple Silicon），已安装 Homebrew、Python3、gh CLI
+- macOS（Apple Silicon），已安装 Homebrew、Python3、gh CLI、poppler（PDF 渲染）
 - 需要新命令行工具时优先用 `brew install` 安装
 
 ## 搜索偏好（Wonder 指定）
 
-- 原则：**优先官方一手来源**，第三方资料只做补充和交叉验证
+- 原则：**本地 Zotero 知识库已有的资料优先**，其次官方一手来源，第三方资料只做补充和交叉验证
 - 器件/规格/应用类问题，用 `site:` 语法定向搜索，优先级从高到低：
   1. `site:ti.com` —— 产品页、Datasheet、Application Note
   2. `site:e2e.ti.com` —— TI 官方 E2E 技术论坛（应用疑难杂症常有人讨论过）
