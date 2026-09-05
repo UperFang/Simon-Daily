@@ -26,7 +26,8 @@ REQUIRED_SCRIPTS = ["read_mail.py", "send_mail.py", "zotero_lib.py", "zotero_add
                     "self_check.py", "cleanup_cache.py"]
 KEYCHAIN = [("qq-mail", "QQ 邮箱授权码"), ("zotero-api-key", "Zotero API key")]
 REQUIRED_PATHS = ["docs/knowledge", "data/datasheets", "CLAUDE.md", ".gitignore",
-                  "docs/Zotero目录结构.md", "docs/改进建议.md"]
+                  "docs/Zotero目录结构.md", "docs/改进建议.md",
+                  "docs/工具速查.md", "docs/搜索策略.md"]
 KNOWLEDGE_DIR = os.path.join(ROOT, "docs", "knowledge")
 TREE_SNAPSHOT = os.path.join(ROOT, "data", ".zotero_tree")
 SUGGESTIONS_FILE = os.path.join(ROOT, "docs", "改进建议.md")
