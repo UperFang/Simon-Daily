@@ -49,6 +49,7 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 - 搜索条目（结果附原文绝对路径）：`python3 scripts/zotero_lib.py -s 关键词`
 - 浏览分类：`python3 scripts/zotero_lib.py --collections`；按分类浏览：`-c "分类名"`
 - 找到原文路径后直接用 Read 工具读 PDF（已装 poppler）
+- **写入 Zotero（导入资料）**：`python3 scripts/zotero_add.py <文件> --collection "2- BMS" --title "标题" [--tags BMS,TI] [--url ...]`——通过本地 API（localhost:23119，需 Zotero 运行中且已开启 API）。API key 在钥匙串（服务名 `zotero-api-key`），失效时重新走 `/api/local/authorize` 授权
 - ⚠️ 库里存在 **TI 保密（NDA）文档**：这类内容只供本地会话分析，严禁写入任何会推送到公开 GitHub 仓库的文件
 
 ### 本机环境
