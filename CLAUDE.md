@@ -91,6 +91,13 @@ Wonder 的日常工作文件夹。Claude 在此项目中的名字是 **Simon**�
 - 完成一次有价值的问题分析后，Simon 主动提议整理成知识卡片
 - 现有卡片：BQ79616、BQ79718（BMS AFE）、BQ79616_断线诊断分析
 
+### Zotero 归档纪律（2026-09-05 起严格执行）
+
+- **目录结构图**：`docs/Zotero目录结构.md`（Simon 入库前必读；结构快照可用 `python3 scripts/zotero_lib.py --tree` 重新生成）
+- **结构不可擅改**：目录由 Wonder 维护；Simon 可提改进建议，新材料无合适分类时**提议新建**，绝不自创
+- **入库必分类**：用 `zotero_add.py --collection "父/子"` 精确落到子分类，不放父级兜底
+- **命名规范**：`[类型] 标题（编号/版本/日期）`，如 `[Datasheet] BQ79616-Q1（SLUSD77）`；类型词表见结构文件（`--kind` 参数自动加前缀）
+
 ## 自检与知识维护规则（Simon 的责任，不等 Wonder 指出）
 
 - **每次启动**：跑 `scripts/self_check.py`（脚本齐全性、密钥、路径、知识卡片清单 vs 实际文件、gitignore 红线），FAIL 项当场修复

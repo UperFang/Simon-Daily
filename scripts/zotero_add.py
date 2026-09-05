@@ -8,11 +8,17 @@
     把一份资料自动归档进知识库。
 
 用法：
-    python3 scripts/zotero_add.py <文件> --collection "2- BMS" [--title 标题] \
-        [--item-type report] [--tags BMS,TI] [--url https://...]
+    python3 scripts/zotero_add.py <文件> --collection "FAE&Work/2- BMS/1- TI - BQ" \
+        --kind Datasheet --title "BQ79616-Q1（SLUSD77）" [--tags BMS,TI] [--url ...]
 
-    省略 --title 时用文件名（去扩展名）；--tags 逗号分隔；--item-type 默认 document
-    （期刊文章可用 journalArticle，报告用 report，Datasheet 常用 document/report）。
+    --collection 支持子目录路径（父/子/孙），每段精确优先、包含兜底；
+    省略 --title 时用文件名（去扩展名）；--kind 按Wonder的命名规范加
+    「[类型] 」前缀（类型词表见 docs/Zotero目录结构.md），标题已有 [ ] 前缀则不重复加。
+
+分类纪律（重要）：
+    - 只存入已存在的分类，脚本绝不自动创建
+    - 目录结构如需调整，必须向 Wonder 提议并获同意
+    - 找不到合适分类时报错并列出可选项，由 Simon 向 Wonder 提议新建
 
 前置条件：
     1. Zotero 正在运行
@@ -147,10 +153,48 @@ class Zotero:
             sys.exit(f"❌ 注册上传失败 [{resp.status}]")
 
 
+def resolve_collection(z, path_spec):
+    """按「父/子/孙」路径解析分类，返回 (collection, None) 或 (None, 错误信息)
+
+    每段先精确匹配、再大小写不敏感包含匹配。找不到时给出当前层级可选清单，
+    绝不自动创建分类（目录结构的改动必须经 Wonder 同意）。
+    """
+    _, body = z.request("GET", "/collections?format=json")
+    collections = json.loads(body)
+    children = {}
+    for c in collections:
+        # API 里根分类的 parentCollection 是 false，统一归一化为 None
+        parent = c["data"].get("parentCollection") or None
+        children.setdefault(parent, []).append(c)
+
+    node = None
+    candidates = children.get(None, [])
+    for seg in path_spec.split("/"):
+        seg = seg.strip()
+        seg_l = seg.lower()
+        exact = [c for c in candidates if c["data"]["name"].lower() == seg_l]
+        fuzzy = [c for c in candidates if seg_l in c["data"]["name"].lower()]
+        pick = exact or fuzzy
+        if not pick:
+            options = "、".join(sorted(c["data"]["name"] for c in candidates)) or "（无）"
+            return None, f"路径段「{seg}」不存在。当前层级可选：{options}"
+        node = pick[0]
+        candidates = sorted(children.get(node["key"], []), key=lambda c: c["data"]["name"])
+
+    hint = ""
+    if candidates:
+        hint = f"（注意：其下还有子分类 {'、'.join(c['data']['name'] for c in candidates)}，确认是否应放更深一层）"
+    return (node, hint)
+
+
 def main():
     parser = argparse.ArgumentParser(description="导入文件到 Zotero")
     parser.add_argument("file")
-    parser.add_argument("--collection", required=True, help="目标分类名（精确或包含匹配）")
+    parser.add_argument("--collection", required=True,
+                        help='目标分类，支持子目录路径，如 "FAE&Work/2- BMS/1- TI - BQ"')
+    parser.add_argument("--kind", default="",
+                        help='资料类型前缀（命名规范），如 Datasheet / Application Note / Report，'
+                             "自动生成「[类型] 标题」；标题里已有 [类型] 时不重复加")
     parser.add_argument("--title")
     parser.add_argument("--item-type", default="document")
     parser.add_argument("--tags", default="", help="逗号分隔")
@@ -160,29 +204,20 @@ def main():
 
     z = Zotero()
 
-    # 找分类
-    _, body = z.request("GET", "/collections?format=json")
-    collections = json.loads(body)
-    ckey = None
-    for c in collections:
-        if c["data"]["name"] == args.collection:
-            ckey = c["key"]
-            break
-    if not ckey:
-        for c in collections:
-            if args.collection.lower() in c["data"]["name"].lower():
-                ckey = c["key"]
-                print(f"（匹配到分类「{c['data']['name']}」）")
-                break
-    if not ckey:
-        sys.exit(f"❌ 没找到分类「{args.collection}」")
+    # 按路径找分类（不自动创建——目录结构改动必须经 Wonder 同意）
+    node, err = resolve_collection(z, args.collection)
+    if err:
+        sys.exit(f"❌ {err}\n（如确无合适分类，请向 Wonder 提议新建，不要自行创建）")
+    print(f"（目标分类：{node['data']['name']}）")
 
     filename = args.file.split("/")[-1]
     title = args.title or filename.rsplit(".", 1)[0]
+    if args.kind and not title.startswith("["):
+        title = f"[{args.kind}] {title}"
     parent = {
         "itemType": args.item_type,
         "title": title,
-        "collections": [ckey],
+        "collections": [node["key"]],
         "tags": [{"tag": t.strip()} for t in args.tags.split(",") if t.strip()],
     }
     if args.url:
